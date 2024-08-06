@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
 @Configuration
 public class RabbitMQConfig {
 
@@ -53,14 +56,14 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public ConnectionFactory connectionFactory() {
+    public ConnectionFactory connectionFactory() throws NoSuchAlgorithmException, KeyManagementException {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
         connectionFactory.setHost(rabbitmqHost);
         connectionFactory.setPort(rabbitmqPort);
         connectionFactory.setUsername(rabbitmqUsername);
         connectionFactory.setPassword(rabbitmqPassword);
         // SSL 설정이 필요한 경우 아래 주석을 해제합니다.
-        // connectionFactory.getRabbitConnectionFactory().useSslProtocol();
+         connectionFactory.getRabbitConnectionFactory().useSslProtocol();
         return connectionFactory;
     }
 
